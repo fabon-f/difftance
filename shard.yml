@@ -1,0 +1,13 @@
+name: difftance
+version: 0.1.0
+
+authors:
+  - fabon <syobon.hinata.public@gmail.com>
+
+targets:
+  difftance:
+    main: src/difftance.cr
+
+crystal: 1.3.0
+
+license: MIT
