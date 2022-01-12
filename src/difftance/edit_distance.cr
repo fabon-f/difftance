@@ -2,13 +2,21 @@ module Difftance
   module EditDistance
     extend self
 
+    def edit_distance(before before_str : String, after after_str : String, costs = { deletion: 1, insertion: 1, substitution: 1 })
+      if costs[:deletion] == 1 && costs[:insertion] == 1 && costs[:substitution] == 2
+        edit_distance_no_substitution(before_str, after_str)
+      else
+        dp(before_str, after_str, costs)
+      end
+    end
+
     # Wagner–Fischer algorithm
-    def dp(before before_str : String, after after_str : String, scores = { deletion: 1, insertion: 1, substitutions: 1 })
+    def dp(before before_str : String, after after_str : String, costs = { deletion: 1, insertion: 1, substitution: 1 })
       before_chars = before_str.chars
       after_chars = after_str.chars
-      ins = scores[:insertion]
-      del = scores[:deletion]
-      sub = scores[:substitutions]
+      ins = costs[:insertion]
+      del = costs[:deletion]
+      sub = costs[:substitution]
       dp = Array.new(before_chars.size + 1) { |i| i == 0 ? Array.new(after_chars.size + 1) { |j| j * ins } : Array.new(after_chars.size + 1) { |j| j == 0 ? i * del : 0 } }
       (1..before_chars.size).each do |i|
         (1..after_chars.size).each do |j|
