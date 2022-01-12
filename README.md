@@ -4,6 +4,12 @@ A diff tool to show edit distance. Works well with Git.
 
 ## Installation
 
+### AUR (for Arch users)
+
+git(upstream): https://aur.archlinux.org/packages/difftance-git/
+
+### Manual installation
+
 ```sh
 # default install directory: /usr/local/bin
 make install INSTALL_DIR=install_path
