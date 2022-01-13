@@ -16,6 +16,11 @@ parser = OptionParser.parse do |parser|
     puts parser
     exit
   end
+  parser.on("-v", "--version", "Show the version of this program") do
+    puts Difftance::VERSION
+    exit
+  end
+
   parser.on("--no-substitution", "Disable substitution(fast, allow only deletion and insertion)") do
     no_sub = true
   end
