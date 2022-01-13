@@ -1,0 +1,21 @@
+name: ci
+
+on:
+  push:
+    tags:
+      - "v*.*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build a fully statically linked program
+        run: docker run --rm -it -v $(pwd):/workspace -w /workspace crystallang/crystal:latest-alpine make build && cp bin/difftance bin/difftance-x86_64
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            bin/difftance-x86_64
