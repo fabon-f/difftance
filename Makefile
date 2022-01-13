@@ -15,5 +15,8 @@ build: $(DIFFTANCE_BIN)
 $(DIFFTANCE_BIN): $(DIFFTANCE_SOURCES)
 	shards build --release --no-debug
 
+build-static: $(DIFFTANCE_SOURCES)
+	shards build --release --no-debug --static
+
 install: build | $(INSTALL_DIR)
 	cp $(DIFFTANCE_BIN) $(DIFFTANCE_SYSTEM_BIN)
