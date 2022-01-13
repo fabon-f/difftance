@@ -62,7 +62,9 @@ elsif args.size == 2
   content1 = File.read(args[0])
   content2 = File.read(args[1])
   distance = Difftance::EditDistance.edit_distance(content1, content2, operation_cost)
-  puts "#{args[0]}, #{args[1]}: #{distance}"
+  # When executed by `git difftool --extcmd=difftance`, use $BASE as a path in output
+  path_output = ENV.has_key?("BASE") ? ENV["BASE"] : "#{args[0]}, #{args[1]}"
+  puts "#{path_output}: #{distance}"
 else
   STDERR.puts "Error: Invalid arguments"
   STDERR.puts parser
