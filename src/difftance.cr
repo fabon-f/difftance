@@ -48,8 +48,6 @@ if no_sub
   operation_cost[:substitution] = operation_cost[:insertion] + operation_cost[:deletion]
 end
 
-p operation_cost
-
 if args.size == 7 && ENV.has_key?("GIT_DIFF_PATH_COUNTER")
   path, old_file, old_hex, old_mode, new_file, new_hex, new_mode = args
   old_content = File.read(File.expand_path(old_file))
