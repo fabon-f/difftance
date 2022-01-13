@@ -57,7 +57,7 @@ if args.size == 7 && ENV.has_key?("GIT_DIFF_PATH_COUNTER")
   puts "#{path}: #{distance}"
 elsif args.size == 1 && ENV.has_key?("GIT_DIFF_PATH_COUNTER")
   path = args[0]
-  puts "#{path}: #{File.read(File.expand_path(path)).size}"
+  puts "#{path}: #{File.read(File.expand_path(path)).size * operation_cost[:insertion]}"
 elsif args.size == 2
   if File.info(args[0]).directory? && File.info(args[1]).directory?
     # Directory diff
