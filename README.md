@@ -4,6 +4,10 @@ A diff tool to show edit distance. Works well with Git.
 
 ## Installation
 
+### Binary release
+
+You can download x86_64 executable from [GitHub release](https://github.com/fabon-f/difftance/releases).
+
 ### AUR (for Arch users)
 
 git(upstream): https://aur.archlinux.org/packages/difftance-git/
