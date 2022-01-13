@@ -59,12 +59,17 @@ elsif args.size == 1 && ENV.has_key?("GIT_DIFF_PATH_COUNTER")
   path = args[0]
   puts "#{path}: #{File.read(File.expand_path(path)).size}"
 elsif args.size == 2
-  content1 = File.read(args[0])
-  content2 = File.read(args[1])
-  distance = Difftance::EditDistance.edit_distance(content1, content2, operation_cost)
-  # When executed by `git difftool --extcmd=difftance`, use $BASE as a path in output
-  path_output = ENV.has_key?("BASE") ? ENV["BASE"] : "#{args[0]}, #{args[1]}"
-  puts "#{path_output}: #{distance}"
+  if File.info(args[0]).directory? && File.info(args[1]).directory?
+    # Directory diff
+    Difftance::DirectoryDiff.exec(args[0], args[1], operation_cost)
+  else
+    content1 = File.read(args[0])
+    content2 = File.read(args[1])
+    distance = Difftance::EditDistance.edit_distance(content1, content2, operation_cost)
+    # When executed by `git difftool --extcmd=difftance`, use $BASE as a path in output
+    path_output = ENV.has_key?("BASE") ? ENV["BASE"] : "#{args[0]}, #{args[1]}"
+    puts "#{path_output}: #{distance}"
+  end
 else
   STDERR.puts "Error: Invalid arguments"
   STDERR.puts parser
