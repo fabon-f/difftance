@@ -10,6 +10,7 @@ You can download x86_64 executable from [GitHub release](https://github.com/fabo
 
 ### AUR (for Arch users)
 
+binary release: https://aur.archlinux.org/packages/difftance-bin/
 git(upstream): https://aur.archlinux.org/packages/difftance-git/
 
 ### Manual installation
