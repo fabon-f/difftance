@@ -7,6 +7,11 @@ DIFFTANCE_BIN=$(OUT_DIR)/difftance
 
 DIFFTANCE_SOURCES=$(shell find src/ -type f -name '*.cr')
 
+.PHONY: help
+help:
+	@echo "\`make build\` to build"
+	@echo "\`make install\` to install (default: PREFIX=/usr/local INSTALL_DIR=\$$PREFIX/bin)"
+
 $(INSTALL_DIR):
 	mkdir -p $@
 
