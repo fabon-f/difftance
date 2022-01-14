@@ -13,3 +13,17 @@ jobs:
       - uses: crystal-lang/install-crystal@v1
       - name: Run tests
         run: crystal spec
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: crystal-lang/install-crystal@v1
+      - name: Build
+        run: |
+          shards build --release --no-debug
+          7z a difftance.zip bin/difftance.exe
+      - uses: actions/upload-artifact@v2
+        with:
+          name: windows-exe
+          path: difftance.zip
