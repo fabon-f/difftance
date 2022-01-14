@@ -1,9 +1,7 @@
 require "./spec_helper"
 
 describe Difftance do
-  # TODO: Write tests
-
-  it "works" do
-    false.should eq(true)
+  it "has constant VERSION" do
+    Difftance::VERSION.should be_a(String)
   end
 end
