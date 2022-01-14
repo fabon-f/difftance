@@ -13,12 +13,12 @@ brew install difftance
 
 ### AUR (for Arch Linux users)
 
-binary release: https://aur.archlinux.org/packages/difftance-bin/
-git(upstream): https://aur.archlinux.org/packages/difftance-git/
+* binary release: https://aur.archlinux.org/packages/difftance-bin/
+* git(upstream): https://aur.archlinux.org/packages/difftance-git/
 
-### Binary release(Linux)
+### Binary release(Windows, Linux)
 
-You can download x86_64 executable from [GitHub release](https://github.com/fabon-f/difftance/releases).
+You can download Windows or Linux(x86_64) executable from [GitHub release](https://github.com/fabon-f/difftance/releases).
 
 ### Manual installation
 
