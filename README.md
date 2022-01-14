@@ -35,6 +35,8 @@ difftance file1 file2
 # Use as a custom diff tool for Git
 git difftool --extcmd=difftance
 git difftool --extcmd=difftance --dir-diff
+# You can pass options by using DIFFTANCE_OPTS environment variable
+DIFFTANCE_OPTS="--no-substitution" git difftool --extcmd=difftance
 
 # or
 GIT_EXTERNAL_DIFF="difftance" git diff

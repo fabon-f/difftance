@@ -5,6 +5,8 @@ args = [] of String
 no_sub = false
 operation_cost = { :deletion => 1, :insertion => 1, :substitution => 1 }
 
+ARGV.concat(ENV["DIFFTANCE_OPTS"].split) if ENV.has_key?("DIFFTANCE_OPTS")
+
 parser = OptionParser.parse do |parser|
   parser.banner = "Usage: difftance [options] FILE1 FILE2"
   parser.on("-h", "--help", "Show this help") do
