@@ -21,7 +21,8 @@ $(DIFFTANCE_BIN): $(DIFFTANCE_SOURCES)
 	shards build --release --no-debug
 
 build-static: $(DIFFTANCE_SOURCES)
-	shards build --release --no-debug --static
+	shards build difftance --release --no-debug --static
+	strip bin/difftance
 
 install: build | $(INSTALL_DIR)
 	cp $(DIFFTANCE_BIN) $(DIFFTANCE_SYSTEM_BIN)

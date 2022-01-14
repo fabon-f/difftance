@@ -6,16 +6,19 @@ on:
       - "v*.*"
 
 jobs:
-  release:
+  release-linux:
     runs-on: ubuntu-latest
+    container:
+      image: crystallang/crystal:latest-alpine
     steps:
       - uses: actions/checkout@v2
 
       - name: Build a fully statically linked program
-        run: docker run --rm -v $(pwd):/workspace -w /workspace crystallang/crystal:latest-alpine make build-static && cp bin/difftance difftance-x86_64 && strip difftance-x86_64
+        run: make build-static && cp bin/difftance difftance-linux-x86_64
 
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            difftance-x86_64
+            difftance-linux-x86_64
+            LICENSE
