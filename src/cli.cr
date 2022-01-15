@@ -5,6 +5,10 @@ def read_file(path : String)
   path == "/dev/null" ? "" : File.read(File.expand_path(path))
 end
 
+def directory?(path : String)
+  path == "/dev/null" ? false : File.info(path).directory?
+end
+
 args = [] of String
 no_sub = false
 operation_cost = { :deletion => 1, :insertion => 1, :substitution => 1 }
@@ -65,7 +69,7 @@ elsif args.size == 1 && ENV.has_key?("GIT_DIFF_PATH_COUNTER")
   path = args[0]
   puts "#{path}: #{read_file(path).size * operation_cost[:insertion]}"
 elsif args.size == 2
-  if File.info(args[0]).directory? && File.info(args[1]).directory?
+  if directory?(args[0]) && directory?(args[1])
     # Directory diff
     Difftance::DirectoryDiff.exec(args[0], args[1], operation_cost)
   else
