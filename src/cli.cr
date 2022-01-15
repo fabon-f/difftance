@@ -1,6 +1,10 @@
 require "./difftance"
 require "option_parser"
 
+def read_file(path : String)
+  path == "/dev/null" ? "" : File.read(File.expand_path(path))
+end
+
 args = [] of String
 no_sub = false
 operation_cost = { :deletion => 1, :insertion => 1, :substitution => 1 }
@@ -52,21 +56,21 @@ end
 
 if args.size == 7 && ENV.has_key?("GIT_DIFF_PATH_COUNTER")
   path, old_file, old_hex, old_mode, new_file, new_hex, new_mode = args
-  old_content = File.read(File.expand_path(old_file))
-  new_content = File.read(File.expand_path(new_file))
+  old_content = read_file(old_file)
+  new_content = read_file(new_file)
 
   distance = Difftance::EditDistance.edit_distance(old_content, new_content, operation_cost)
   puts "#{path}: #{distance}"
 elsif args.size == 1 && ENV.has_key?("GIT_DIFF_PATH_COUNTER")
   path = args[0]
-  puts "#{path}: #{File.read(File.expand_path(path)).size * operation_cost[:insertion]}"
+  puts "#{path}: #{read_file(path).size * operation_cost[:insertion]}"
 elsif args.size == 2
   if File.info(args[0]).directory? && File.info(args[1]).directory?
     # Directory diff
     Difftance::DirectoryDiff.exec(args[0], args[1], operation_cost)
   else
-    content1 = File.read(args[0])
-    content2 = File.read(args[1])
+    content1 = read_file(args[0])
+    content2 = read_file(args[1])
     distance = Difftance::EditDistance.edit_distance(content1, content2, operation_cost)
     # When executed by `git difftool --extcmd=difftance`, use $BASE as a path in output
     path_output = ENV.has_key?("BASE") ? ENV["BASE"] : "#{args[0]}, #{args[1]}"
