@@ -17,11 +17,25 @@ module Difftance
 
       hash1.merge(hash2).each_key do |f|
         if !hash1.has_key?(f)
-          puts "#{f} (created): #{Difftance::EditDistance.edit_distance("", File.read(Path.new(dir2, f)))}"
+          content = Difftance::FileUtils.read_textfile(Path.new(dir2, f))
+          if content.nil?
+            puts "#{f} (created): binary or unsupported encoding"
+            next
+          end
+          puts "#{f} (created): #{Difftance::EditDistance.edit_distance("", content)}"
         elsif !hash2.has_key?(f)
-          puts "#{f} (deleted): #{Difftance::EditDistance.edit_distance(File.read(Path.new(dir1, f)), "")}"
+          content = Difftance::FileUtils.read_textfile(Path.new(dir1, f))
+          if content.nil?
+            puts "#{f} (deleted): binary or unsupported encoding"
+            next
+          end
+          puts "#{f} (deleted): #{Difftance::EditDistance.edit_distance(content, "")}"
         else
-          content1, content2 = {dir1, dir2}.map{|d| File.read(Path.new(d, f)) }
+          content1, content2 = {dir1, dir2}.map{|d| Difftance::FileUtils.read_textfile(Path.new(d, f)) }
+          if content1.nil? || content2.nil?
+            puts "#{f}: binary or unsupported encoding"
+            next
+          end
           distance = Difftance::EditDistance.edit_distance(content1, content2)
           puts "#{f}: #{distance}"
         end

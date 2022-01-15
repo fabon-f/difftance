@@ -5,7 +5,8 @@ def read_file(path : String)
   {% if flag?(:win32) %}
     return "" if path == "nul"
   {% end %}
-  path == "/dev/null" ? "" : File.read(File.expand_path(path))
+  return "" if path == "/dev/null"
+  Difftance::FileUtils.read_textfile(File.expand_path(path))
 end
 
 def directory?(path : String)
@@ -13,6 +14,11 @@ def directory?(path : String)
     return false if path == "nul"
   {% end %}
   path == "/dev/null" ? false : File.info(path).directory?
+end
+
+def unsupported_binary
+  STDERR.puts "Binary or unsupported encoding, skipped"
+  exit 0
 end
 
 args = [] of String
@@ -69,11 +75,19 @@ if args.size == 7 && ENV.has_key?("GIT_DIFF_PATH_COUNTER")
   old_content = read_file(old_file)
   new_content = read_file(new_file)
 
+  if old_content.nil? || new_content.nil?
+    unsupported_binary
+  end
+
   distance = Difftance::EditDistance.edit_distance(old_content, new_content, operation_cost)
   puts "#{path}: #{distance}"
 elsif args.size == 1 && ENV.has_key?("GIT_DIFF_PATH_COUNTER")
   path = args[0]
-  puts "#{path}: #{read_file(path).size * operation_cost[:insertion]}"
+  content = read_file(path)
+  if content.nil?
+    unsupported_binary
+  end
+  puts "#{path}: #{content.size * operation_cost[:insertion]}"
 elsif args.size == 2
   if directory?(args[0]) && directory?(args[1])
     # Directory diff
@@ -81,6 +95,11 @@ elsif args.size == 2
   else
     content1 = read_file(args[0])
     content2 = read_file(args[1])
+
+    if content1.nil? || content2.nil?
+      unsupported_binary
+    end
+
     distance = Difftance::EditDistance.edit_distance(content1, content2, operation_cost)
     # When executed by `git difftool --extcmd=difftance`, use $BASE as a path in output
     path_output = ENV.has_key?("BASE") ? ENV["BASE"] : "#{args[0]}, #{args[1]}"
