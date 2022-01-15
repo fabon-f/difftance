@@ -2,10 +2,16 @@ require "./difftance"
 require "option_parser"
 
 def read_file(path : String)
+  {% if flag?(:win32) %}
+    return "" if path == "nul"
+  {% end %}
   path == "/dev/null" ? "" : File.read(File.expand_path(path))
 end
 
 def directory?(path : String)
+  {% if flag?(:win32) %}
+    return false if path == "nul"
+  {% end %}
   path == "/dev/null" ? false : File.info(path).directory?
 end
 
