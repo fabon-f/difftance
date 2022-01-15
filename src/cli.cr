@@ -38,7 +38,7 @@ parser = OptionParser.parse do |parser|
     exit
   end
 
-  parser.on("--allow-substitution", "Allow substitution(slow and consume much memory)") do
+  parser.on("--allow-substitution", "Allow substitution(Compute Levenshtein distance, slow and consume much memory)") do
     no_sub = false
   end
 
