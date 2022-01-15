@@ -22,7 +22,7 @@ def unsupported_binary
 end
 
 args = [] of String
-no_sub = false
+no_sub = true
 operation_cost = { :deletion => 1, :insertion => 1, :substitution => 1 }
 
 ARGV.concat(ENV["DIFFTANCE_OPTS"].split) if ENV.has_key?("DIFFTANCE_OPTS")
@@ -38,8 +38,8 @@ parser = OptionParser.parse do |parser|
     exit
   end
 
-  parser.on("--no-substitution", "Disable substitution(fast, allow only deletion and insertion)") do
-    no_sub = true
+  parser.on("--allow-substitution", "Allow substitution(slow and consume much memory)") do
+    no_sub = false
   end
 
   parser.on("--cost-ins=COST", "Specify the cost of insertion, default: 1") do |cost|
