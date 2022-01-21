@@ -65,11 +65,6 @@ parser = OptionParser.parse do |parser|
   end
 end
 
-
-if no_sub
-  operation_cost[:substitution] = operation_cost[:insertion] + operation_cost[:deletion]
-end
-
 if args.size == 7 && ENV.has_key?("GIT_DIFF_PATH_COUNTER")
   path, old_file, old_hex, old_mode, new_file, new_hex, new_mode = args
   old_content = read_file(old_file)
@@ -79,7 +74,7 @@ if args.size == 7 && ENV.has_key?("GIT_DIFF_PATH_COUNTER")
     unsupported_binary
   end
 
-  distance = Difftance::EditDistance.edit_distance(old_content, new_content, operation_cost)
+  distance = Difftance::EditDistance.edit_distance(old_content, new_content, operation_cost, no_sub)
   puts "#{path}: #{distance}"
 elsif args.size == 1 && ENV.has_key?("GIT_DIFF_PATH_COUNTER")
   path = args[0]
@@ -100,7 +95,7 @@ elsif args.size == 2
       unsupported_binary
     end
 
-    distance = Difftance::EditDistance.edit_distance(content1, content2, operation_cost)
+    distance = Difftance::EditDistance.edit_distance(content1, content2, operation_cost, no_sub)
     # When executed by `git difftool --extcmd=difftance`, use $BASE as a path in output
     path_output = ENV.has_key?("BASE") ? ENV["BASE"] : "#{args[0]}, #{args[1]}"
     puts "#{path_output}: #{distance}"

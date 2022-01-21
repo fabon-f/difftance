@@ -10,6 +10,7 @@ describe Difftance::EditDistance do
       Difftance::EditDistance.edit_distance("before", "after", { insertion: 2, deletion: 2, substitution: 3 }).should eq(12)
       Difftance::EditDistance.edit_distance("before", "after", { insertion: 1, deletion: 1, substitution: 2 }).should eq(7)
       Difftance::EditDistance.edit_distance("abcdef", "beghi", { insertion: 1, deletion: 0, substitution: 1 }).should eq(3)
+      Difftance::EditDistance.edit_distance("abcdef", "beghi", { insertion: 2, deletion: 1, substitution: 3 }).should eq(10)
     end
 
     it "treat UTF-8 correctly" do

@@ -2,9 +2,9 @@ module Difftance
   module EditDistance
     extend self
 
-    def edit_distance(before before_str : String, after after_str : String, costs = { deletion: 1, insertion: 1, substitution: 1 })
-      if costs[:deletion] == 1 && costs[:insertion] == 1 && costs[:substitution] == 2
-        edit_distance_no_substitution(before_str, after_str)
+    def edit_distance(before before_str : String, after after_str : String, costs = { deletion: 1, insertion: 1, substitution: 1 }, no_substitution = false)
+      if no_substitution || costs[:deletion] + costs[:insertion] == costs[:substitution]
+        edit_distance_no_substitution(before_str, after_str, costs)
       else
         dp(before_str, after_str, costs)
       end
@@ -33,8 +33,10 @@ module Difftance
     # Wu, S., Manber, U., Myers, E.W., & Miller, W. (1990). An O(NP) Sequence Comparison Algorithm. Inf. Process. Lett., 35, 317-323.
     # https://api.semanticscholar.org/CorpusID:9968782
     # ins=1, del=1, sub=2(disallowing substitution)
-    def edit_distance_no_substitution(str1 : String, str2 : String)
-      chars1, chars2 = str1.size < str2.size ? {str1.chars, str2.chars} : {str2.chars, str1.chars}
+    def edit_distance_no_substitution(before before_str : String, after after_str : String, costs = { deletion: 1, insertion: 1 })
+      cost_ins = costs[:insertion]
+      cost_del = costs[:deletion]
+      chars1, chars2 = before_str.size < after_str.size ? {before_str.chars, after_str.chars} : {after_str.chars, before_str.chars}
 
       delta = chars2.size - chars1.size
       offset = chars1.size + 1
@@ -61,7 +63,7 @@ module Difftance
         fp[dd] = snake(delta, (v0 > v1 ? v0 : v1), chars1, chars2)
         p += 1
       end
-      delta + (p - 1) * 2
+      (p - 1) * cost_del + (p - 1) * cost_ins + (before_str.size < after_str.size ? delta * cost_ins : delta * cost_del)
     end
 
     private def snake(k : Int, y : Int, str1 : Array(Char), str2 : Array(Char))
