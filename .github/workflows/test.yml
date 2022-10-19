@@ -28,7 +28,7 @@ jobs:
           shards build --release --no-debug
           strip bin/difftance.exe
           7z a difftance.zip bin/difftance.exe
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: windows-exe
           path: difftance.zip
