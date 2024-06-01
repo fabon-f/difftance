@@ -4,7 +4,7 @@ module Difftance
 
     def list_files(dir)
       Dir.cd(dir) do
-        return Dir.glob("**/*", match_hidden: true).select{ |f| File.info(f).file? }
+        return Dir.glob("**/*", match: File::MatchOptions::All).select{ |f| File.info(f).file? }
       end
     end
 
