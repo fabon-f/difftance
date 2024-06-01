@@ -8,6 +8,6 @@ targets:
   difftance:
     main: src/cli.cr
 
-crystal: 1.6.0
+crystal: ">= 1.12, < 2.0.0"
 
 license: MIT
