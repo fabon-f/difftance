@@ -11,13 +11,13 @@ jobs:
     container:
       image: crystallang/crystal:latest-alpine
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Build a fully statically linked program
         run: make build-static && cp bin/difftance difftance-linux-x86_64
 
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             difftance-linux-x86_64
@@ -30,7 +30,7 @@ jobs:
         run: |
           git config --global core.autocrlf false
           git config --global core.eol lf
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: crystal-lang/install-crystal@v1
       - name: Build
         shell: bash
@@ -38,6 +38,6 @@ jobs:
           shards build --release --no-debug
           mv bin/difftance.exe difftance.exe
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: difftance.exe
